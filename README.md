@@ -36,6 +36,11 @@ docker compose up -d
 
 Filebrowser y OnlyOffice **comparten el mismo secreto JWT**, imprescindible para que OnlyOffice pueda abrir y guardar documentos correctamente.
 
+Generar clave JWT:
+
+openssl rand -hex 32
+
+
 ⚠️ **Cambia el secreto en producción.**
 
 ---
