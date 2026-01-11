@@ -1,0 +1,39 @@
+services:
+
+  filebrowser:
+    image: gtstef/filebrowser:latest
+    container_name: filebrowser
+    restart: unless-stopped
+    ports:
+      - "8200:80"
+    environment:
+      - TZ=Europe/Madrid
+      - FILEBROWSER_ONLYOFFICE_SECRET=066a60a2e469df3b6fa0b45e92c920062a01287f
+    volumes:
+      - ./config.yaml:/home/filebrowser/config.yaml
+      - ./documents:/documents
+      - ./movies:/movies
+      - ./photos:/photos
+      - ./data:/home/filebrowser/data
+    networks:
+      - office-net
+
+  onlyoffice:
+    image: onlyoffice/documentserver:latest
+    container_name: onlyoffice-file
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - JWT_ENABLED=true
+      - JWT_SECRET=066a60a2e469df3b6fa0b45e92c920062a01287f
+      - ALLOW_PRIVATE_IP_ADDRESS=true
+      - USE_UNAUTHORIZED_STORAGE=true
+    volumes:
+      - ./documents:/documents
+    networks:
+      - office-net
+
+networks:
+  office-net:
+    driver: bridge
